@@ -20,8 +20,7 @@ Web Security Scanner is a Python-based tool that checks HTTP security headers an
 ## Installation
 Install the required dependency:
 
-    python3 -m pip install -r requirements.txt
-
+python3 -m pip install requests
 ## Usage
 Create a text file containing one authorized target URL per line.
 
