@@ -13,10 +13,6 @@ Web Security Scanner is a Python-based tool that checks HTTP security headers an
 - Reports present and missing security headers.
 - Reads target URLs from a text file.
 
-## Requirements
-- Python 3
-- requests library
-
 ## Installation
 Install the required dependency:
 
