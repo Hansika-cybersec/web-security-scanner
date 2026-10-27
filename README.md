@@ -14,28 +14,37 @@ Web Security Scanner is a Python-based tool that checks HTTP security headers an
 - Reads target URLs from a text file.
 
 ## Installation
-Install the required dependency:
+Install the required dependencies:
 
-python3 -m pip install requests
+```bash
+python -m pip install -r requirements.txt
+```
 ## Usage
+
 Create a text file containing one authorized target URL per line.
 
-Run the scanner:
+Check the available command-line arguments:
 
-    python3 web_security_scanner.py -l test_targets.txt -c https://example.com
-Note: https://example.com is a placeholder Origin for basic testing. Use a controlled Origin and verify CORS behaviour manually before reporting a finding.
+```bash
+python web_security_scanner.py -h
+```
+
+The scanner requires the following arguments:
+- `-l` or `--list`: Path to the target-list file.
+- `-c` or `--collab`: Origin value used for CORS testing.
+
 Optional arguments:
+- `-t` or `--threads`: Number of concurrent threads.
+- `--timeout`: Request timeout in seconds.
+- `-o` or `--output`: File for flagged CORS results.
 
-- `-t`: Number of threads
-- `--timeout`: Request timeout in seconds
-- `-o`: Output file for flagged CORS results
+To perform a scan, provide a target-list file and a valid, controlled Origin appropriate for CORS testing. Use only authorized targets.
 
 ## Important Notes
 - Test only websites you own or have explicit permission to assess.
 - CORS reflection does not automatically confirm a vulnerability.
 - Missing security headers must be evaluated in context.
 - Use a valid, authorized CORS test origin for meaningful CORS assessment.
-- `https://example.com` is a placeholder Origin; use a controlled Origin and manually verify CORS behaviour before reporting a finding.
 - The current output file option saves flagged CORS results; it does not save the complete security-header report.
 
 ## Project Status
