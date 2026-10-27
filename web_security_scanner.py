@@ -9,8 +9,8 @@ in the Access-Control-Allow-Origin response header.
 Only scan domains you own or are authorized to test (e.g. in-scope bug bounty).
 
 Usage:
-    python3 cors_scanner.py -l domains.txt -c yourid.oastify.com
-    python3 cors_scanner.py -l domains.txt -c yourid.oastify.com -t 20 -o results.txt
+    python3 web_security_scanner.py -l domains.txt -c yourid.oastify.com
+    python3 web_security_scanner.py -l domains.txt -c yourid.oastify.com -t 20 -o results.txt
 """
 def show_banner():
     print(r"""
@@ -28,9 +28,6 @@ import concurrent.futures
 import sys
 
 import requests
-import urllib3
-
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 RED = "\033[91m"
 YELLOW = "\033[93m"
@@ -54,7 +51,7 @@ def check(url, origin, timeout):
     }
     try:
         r = requests.get(url, headers=headers, timeout=timeout,
-                         verify=False, allow_redirects=True)
+                         verify=True, allow_redirects=True)
     except requests.RequestException as e:
         return {"url": url, "error": str(e.__class__.__name__)}
 
@@ -82,7 +79,7 @@ def check_security_headers(url, timeout):
         response = requests.get(
             url,
             timeout=timeout,
-            verify=False,
+            verify=True,
             allow_redirects=True,
             headers={"User-Agent": "Web-Security-Scanner"},
         )
@@ -114,6 +111,8 @@ def main():
     p.add_argument("--timeout", type=int, default=10, help="Request timeout seconds")
     p.add_argument("-o", "--output", help="Save flagged results to this file")
     args = p.parse_args()
+    if args.threads < 1:
+        p.error("Threads must be at least 1.")
 
     collab = args.collab.strip()
     origin = collab if collab.startswith(("http://", "https://")) else "https://" + collab
